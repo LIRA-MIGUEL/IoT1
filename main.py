@@ -1,9 +1,8 @@
 import fastapi
 import sqlite3
-from pydantic import BaseModel
 # Importamos CORS para el acceso
-#from fastapi.middleware.cors import CORSMiddleware
-
+from fastapi.middleware.cors import CORSMiddleware
+from pydantic import BaseModel
 
 # Crea la base de datos
 conn = sqlite3.connect("sql/dispositivos.db")
@@ -11,7 +10,7 @@ conn = sqlite3.connect("sql/dispositivos.db")
 app = fastapi.FastAPI()
 
 # Permitimos los origenes para conectarse
-""" origins = [
+origins = [
     "http://0.0.0.0:8080",
     "http://localhost:8080",
     "http://127.0.0.1:8080",
@@ -24,12 +23,12 @@ app.add_middleware(
     allow_credentials = True,
     allow_methods = ["*"],
     allow_headers = ["*"]
-) """
+)
 
-
-class Dispositivo(BaseModel):
+class Dispositivos(BaseModel):
+    id : str
+    nombre : str
     valor : str
-
 
 @app.get("/")
 def inicio():
@@ -44,7 +43,7 @@ async def obtener_dispositivos():
     c.execute('SELECT * FROM dispositivos')
     response = []
     for row in c:
-        dispositivo = {row[2]}
+        dispositivo = {"id": row[0], "dispositivo": row[1], "valor":row[2]}
         response.append(dispositivo)
     return response
 
@@ -57,15 +56,15 @@ async def obtener_dispositivo(id: str):
     c.execute('SELECT * FROM dispositivos WHERE id = ?', (id))
     dispositivo = None
     for row in c:
-        dispositivo = row[2]
+        dispositivo = {"id": row[0],"dispositivo": row[1], "valor": row[2]}
     return dispositivo
 
 
 @app.put("/dispositivos/{id}")
-async def actualizar_dispositivo(id: str, Dispositivo: Dispositivo):
+async def actualizar_dispositivo(id: str, dispositivo: Dispositivos):
     """Actualiza un contacto."""
     c = conn.cursor()
-    c.execute('UPDATE dispositivos SET valor = ? WHERE id = ?',
-              (Dispositivo.valor, id))
+    c.execute('UPDATE dispositivos SET dispositivo = ?, valor = ? WHERE id = ?',
+              (dispositivo.nombre, dispositivo.valor, id))
     conn.commit()
-    return Dispositivo
+    return dispositivo
