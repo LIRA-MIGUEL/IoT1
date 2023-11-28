@@ -65,7 +65,7 @@ async def obtener_dispositivo(id: str):
 async def actualizar_dispositivo(id: str, dispositivo: Dispositivos):
     """Actualiza un dispositivo."""
     c = conn.cursor()
-    c.execute('UPDATE dispositivos SET nombre = ?, valor = ? WHERE id = ?',
+    c.execute('UPDATE dispositivos SET dispositivo = ?, valor = ? WHERE id = ?',
               (dispositivo.nombre, dispositivo.valor, id))
     conn.commit()
     return dispositivo
