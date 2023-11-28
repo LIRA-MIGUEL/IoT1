@@ -50,7 +50,7 @@ async def obtener_dispositivos():
 
 @app.get("/dispositivos/{id}")
 async def obtener_dispositivo(id: str):
-    """Obtiene un contacto por su email."""
+    """Obtiene un dispositivo por su id."""
     # Consulta el contacto por su email
     c = conn.cursor()
     c.execute('SELECT * FROM dispositivos WHERE id = ?', (id))
@@ -62,9 +62,9 @@ async def obtener_dispositivo(id: str):
 
 @app.put("/dispositivos/{id}")
 async def actualizar_dispositivo(id: str, dispositivo: Dispositivos):
-    """Actualiza un contacto."""
+    """Actualiza un dispositivo."""
     c = conn.cursor()
-    c.execute('UPDATE dispositivos SET dispositivo = ?, valor = ? WHERE id = ?',
+    c.execute('UPDATE dispositivos SET nombre = ?, valor = ? WHERE id = ?',
               (dispositivo.nombre, dispositivo.valor, id))
     conn.commit()
     return dispositivo
