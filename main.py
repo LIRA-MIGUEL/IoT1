@@ -34,7 +34,7 @@ class Dispositivos(BaseModel):
 
 @app.get("/")
 def inicio():
-    return {'Developer by':'Patricio Vargas f:', "IoT Proyect": ":3"}
+    return {'Developer by':'Miguel Angel f:', "IoT Proyect": ":3"}
 
 # Rutas para las operaciones
 @app.get("/dispositivos")
@@ -70,3 +70,4 @@ async def actualizar_dispositivo(id: str, dispositivo: Dispositivos):
               (dispositivo.nombre, dispositivo.valor, id))
     conn.commit()
     return dispositivo
+    
