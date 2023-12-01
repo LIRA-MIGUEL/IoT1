@@ -70,4 +70,3 @@ async def actualizar_dispositivo(id: str, dispositivo: Dispositivos):
               (dispositivo.nombre, dispositivo.valor, id))
     conn.commit()
     return dispositivo
-    
